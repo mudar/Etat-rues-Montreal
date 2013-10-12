@@ -1,0 +1,40 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+/* TEAM */
+
+    Coordination & GIS: Nicolas Delffon
+    Contact: nicolasdelffon [at] gmail.com
+    Twitter: @codelf
+    Location: Montréal, Canada
+
+    Journalist: Florent Daudens
+    Contact: florent.daudens [at] radio-canada.ca
+    Twitter: @fdaudens
+    Location: Montréal, Canada
+
+    Developer: Stéphane Guidoin
+    Contact: stephane [at] opennorth.ca
+    Twitter: @Hoedic
+    Location: Montréal, Canada
+
+    Developer: Mudar Noufal
+    Contact: mn [at] mudar.ca
+    Twitter: @mudarnoufal
+    Location: Montréal, Canada
+
+/* THANKS */
+
+    Open Data: Portail données ouvertes Ville de Montréal
+    Site: http://donnees.ville.montreal.qc.ca/
+    Twitter: @mtl_do
+    Location: Montréal, Canada
+
+/* SITE */
+
+    Last update:2013/10/04
+    Language: French
+    Doctype: HTML5
+    Standards: HTML5, CSS3, GeoJSON
+    Components: jQuery, Modernizr, Boostrap, Leaflet, GitHub
+    Software: KDevelop, FileZilla, Gimp
