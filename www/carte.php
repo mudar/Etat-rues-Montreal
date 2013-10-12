@@ -1,6 +1,11 @@
 <?php
 
 require( 'inc/Geocoder.inc.php' );
+require( 'inc/Boroughs.inc.php' );
+
+$Boroughs = new Boroughs();
+$boroughs = $Boroughs->getBoroughs( 'json' );
+//print_r($boroughs);die();
 
 $address = ( empty( $_POST['address'] ) ? '' : htmlspecialchars( $_POST['address'] ) );
 if ( !empty( $address ) ) {
@@ -25,10 +30,14 @@ if ( !empty( $address ) ) {
 
         <link rel="stylesheet" href="css/normalize.css">
 
-		<link rel="stylesheet" href="js/leaflet-0.6.4/leaflet.css" />
+		<link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
 		<!--[if lte IE 8]>
 			<link rel="stylesheet" href="js/leaflet-0.6.4/leaflet.ie.css" />
 		<![endif]-->
+		<link rel="stylesheet" href="js/leaflet.fullscreen/Control.FullScreen.css" />
+		<link rel="stylesheet" href="js/L.GeoSearch/src/css/l.geosearch.css" />
+
+
 
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
@@ -40,8 +49,9 @@ if ( !empty( $address ) ) {
 
 			<div id="map"></div>
 <div id="wrapper">
-			<header id="header">
+			<header id="header" class="hidden">
 				<h1 id="site-title">État du réseau routier &ndash; Montréal</h1>
+<?php /* ?>
 <div id="form-wrapper">
 	<form id="search-form" method="post" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
 		<fieldset>
@@ -52,6 +62,7 @@ if ( !empty( $address ) ) {
 		</fieldset>
 	</form>
 </div>
+<?php */ ?>
 			</header>
 			<div role="main" id="main">
 				<div id="about" class="info-box scrollable" style="display: none;">
@@ -61,18 +72,34 @@ if ( !empty( $address ) ) {
 				</div>
 				<div id="radio-canada" class="info-box scrollable" style="display: none;">
 					<h2>Radio Canada</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ligula velit, eleifend a massa eu, ullamcorper porta erat. Cras sit amet augue id magna aliquam malesuada id a massa. Sed ornare sem sed justo euismod, a ultrices orci tempus. Duis ultricies in elit eu fermentum. Mauris malesuada eleifend ipsum at venenatis. Fusce laoreet eu arcu ut posuere. Aliquam luctus augue et erat fringilla consectetur. Donec semper lectus dolor, ut commodo velit eleifend accumsan. Proin sed facilisis erat, vitae molestie odio. Praesent rhoncus neque felis, iaculis ullamcorper neque convallis vitae. Ut nisl nisi, pharetra vitae aliquam sed, pharetra in ipsum.</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ligula velit, eleifend a massa eu, ullamcorper porta erat. Cras sit amet augue id magna aliquam malesuada id a massa. Sed ornare sem sed justo euismod, a ultrices orci tempus. Duis ultricies in elit eu fermentum. Mauris malesuada eleifend ipsum at venenatis. Fusce laoreet eu arcu ut posuere. Aliquam luctus augue et erat fringilla consectetur. Donec semper lectus dolor, ut commodo velit eleifend accumsan. Proin sed facilisis erat, vitae molestie odio. Praesent rhoncus neque felis, iaculis ullamcorper neque convallis vitae. Ut nisl nisi, pharetra vitae aliquam sed, pharetra in ipsum.</p>
 				</div>
 				<div id="ville-de-montreal" class="info-box scrollable" style="display: none;">
 					<h2>Ville de Montréal</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultricies in elit eu fermentum. Mauris malesuada eleifend ipsum at venenatis. Fusce laoreet eu arcu ut posuere. Aliquam luctus augue et erat fringilla consectetur. Donec semper lectus dolor, ut commodo velit eleifend accumsan. Proin sed facilisis erat, vitae molestie odio. Praesent rhoncus neque felis, iaculis ullamcorper neque convallis vitae. Ut nisl nisi, pharetra vitae aliquam sed, pharetra in ipsum.</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ultricies in elit eu fermentum. Mauris malesuada eleifend ipsum at venenatis. Fusce laoreet eu arcu ut posuere. Aliquam luctus augue et erat fringilla consectetur. Donec semper lectus dolor, ut commodo velit eleifend accumsan. Proin sed facilisis erat, vitae molestie odio. Praesent rhoncus neque felis, iaculis ullamcorper neque convallis vitae. Ut nisl nisi, pharetra vitae aliquam sed, pharetra in ipsum.</p>
 				</div>
 				<div id="geohack" class="info-box scrollable" style="display: none;">
 					<h2>Défi GéoHack 2013</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ligula velit, eleifend a massa eu, ullamcorper porta erat. Cras sit amet augue id magna aliquam malesuada id a massa. Sed ornare sem sed justo euismod, a ultrices orci tempus. Duis ultricies in elit eu fermentum. Mauris malesuada eleifend ipsum at venenatis. Fusce laoreet eu arcu ut posuere. Aliquam luctus augue et erat fringilla consectetur. Donec semper lectus dolor, ut commodo velit eleifend accumsan. Proin sed facilisis erat, vitae molestie odio.</p> 
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ligula velit, eleifend a massa eu, ullamcorper porta erat. Cras sit amet augue id magna aliquam malesuada id a massa. Sed ornare sem sed justo euismod, a ultrices orci tempus. Duis ultricies in elit eu fermentum. Mauris malesuada eleifend ipsum at venenatis. Fusce laoreet eu arcu ut posuere. Aliquam luctus augue et erat fringilla consectetur. Donec semper lectus dolor, ut commodo velit eleifend accumsan. Proin sed facilisis erat, vitae molestie odio.</p>
+				</div>
+
+				<div id="boroughs">
+					<h2 class="hidden">Arrondissements</h2>
+<?php foreach( $boroughs as $id => $borough ): ?>
+					<div id="<?php echo $id ?>" class="borough scrollable" style="display: none;">
+						<h3 class="name"><?php echo $borough['name'] ?></h3>
+						<p class="avg_ipc"><span class="label">Qualité de la chausée&nbsp;:</span> <strong class="value"><?php echo $borough['avg_ipc'] ?>&nbsp;%</strong></p>
+						<p class="count"><span class="label">Nombre de tronçons&nbsp;:</span> <span class="value"><?php echo number_format( $borough['count'] , 0 , "", " " ) ?></span></p>
+						<p class="sum_long"><span class="label">Kilomètres de tronçons&nbsp;:</span> <span class="value"><?php echo number_format( $borough['sum_long'] / 1000 , 1 , ",", " " ) ?></span></p>
+					</div>
+<?php endforeach ?>
+					<div id="non-mtl" class="borough scrollable" style="display: none;">
+						<p>Ce territoire ne fait pas partie de la Ville de Montréal.</p>
+						<p>Les données sont uniquement disponibles pour les arrondissements de la Ville.</p>
+					</div>
 				</div>
 			</div>
-			<footer id="footer">
+			<footer id="footer" class="hidden">
 				<nav role="navigation" id="navigation">
 					<ul id="main-links">
 						<li><a href="#about" class="link-box">À propos</a></li>
@@ -82,12 +109,40 @@ if ( !empty( $address ) ) {
 					</ul>
 				</nav>
 			</footer>
-   
 </div>
+
+<script type="infowindow/html" id="infowindow_template">
+  <div class="cartodb-popup">
+    <a href="#close" class="cartodb-popup-close-button close">x</a>
+     <div class="cartodb-popup-content-wrapper">
+       <h3 class="name cartodb-popup-header">
+          {{content.data.typ_voie}} {{content.data.lie_voie}} {{content.data.nom_voie}} {{content.data.dir_voie}}
+       </h3>
+       <div class="cartodb-popup-subheader">
+          <p>Arrondissement&nbsp;: {{content.data.arrond}})</p>
+       </div>
+
+       <div class="cartodb-popup-content">
+			<p>Qualité&nbsp;: <strong>{{content.data.ipc_arr}}&nbsp;%</strong></p>
+			<p>État du tronçon&nbsp;: <strong class="classe_ipc">{{content.data.classe_ipc}}</strong></p>
+			<p>Intervention nécessaire selon les critères des la ville&nbsp;: {{content.data.interventi}}</p>
+			<p><small><a target="_blank" href="https://maps.google.ca/?cbll={{content.data.lat}},{{content.data.lng}}&cbp=0,0,0,0,0&layer=c&z=16&hl=fr">Voir sur Google Street View</a></small></p>
+       </div>
+     </div>
+     <div class="cartodb-popup-tip-container"></div>
+  </div>
+</script>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-		<script src="js/leaflet-0.6.4/leaflet.js"></script>
+		<!--<script src="js/leaflet-0.6.4/leaflet.js"></script>-->
+		<script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+		<!--<script src="js/leaflet-providers/leaflet-providers.js"></script>-->
+		<script src="js/leaflet.fullscreen/Control.FullScreen.js"></script>
+		<script src="js/L.GeoSearch/src/js/l.control.geosearch.js"></script>
+		<script src="js/L.GeoSearch/src/js/l.geosearch.provider.openstreetmap.js"></script>
+
+
         <script src="js/plugins.js"></script>
 <script  type="text/javascript">
 <?php if ( !empty( $geo_point ) && empty( $geo_point['error'] ) ): ?>
@@ -97,7 +152,6 @@ if ( !empty( $address ) ) {
 <?php else: ?>
 			var mapCenter = [45.606832, -73.701782];
 			var defaultZoom = 11;
-			var address = "";
 <?php endif ?>
 </script>
         <script src="js/main.js"></script>

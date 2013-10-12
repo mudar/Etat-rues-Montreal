@@ -99,7 +99,7 @@ textarea {
 
 /* Leaflet fixes  */
 .leaflet-top {
-    top: 50px;
+/*     top: 50px; */
 }
 
 html,
@@ -109,18 +109,22 @@ body,
 	height: 100%;
 }
 
-body { 
+body {
 	position: relative;
-	color: #ecf0f1;
+	color: #000;
 	font-size: 10pt;
 }
-a, a:active, a:hover, a:visited, a:focus { 
+a, a:active, a:hover, a:visited, a:focus {
 	color: #ecf0f1;
 	text-decoration: none;
 	outline: none;
 }
 span.black {
 	color: #2c3e50;
+}
+
+html.busy, html.busy * {
+	cursor: wait !important;
 }
 
 #footer,
@@ -134,15 +138,19 @@ span.black {
 	top: 0;
 	left: 0;
 	right: 0;
-	box-shadow: 0px 2px 3px #000;
+	box-shadow: -2px 2px 3px #000;
 }
 #footer {
 	padding: 5px 10px;
 	bottom: 0;
 	right: 0;
+	box-shadow: -2px 0px 3px #000;
 }
 
-h1,h2,h3 { color: #2ecc71; } 
+/* h1,h2,h3 { color: #2ecc71; }  */
+/* h1,h2,h3 { color: #C40404; }  */
+h1,h2,h3 { color: #c0392b; }
+
 h1 { font-size: 1.5em; }
 h2 { font-size: 1.3em; }
 h3 { font-size: 1.1em; }
@@ -177,8 +185,13 @@ a#submit:hover {
 
 .info-box {
 	padding: 15px;
-	margin: 10px;
-	box-shadow: 2px 2px 3px #000;
+	box-shadow: -2px 2px 3px #000;
+	position: absolute;
+	bottom: 50px;
+	right: 20px;
+	background-color: rgba(44, 62, 80,0.9);
+	max-width: 300px;
+	max-height: 60%;
 }
 
 #navigation ul,
@@ -195,21 +208,32 @@ a#submit:hover {
 	padding: 0 1em;
 }
 
-#geohack,
-#ville-de-montreal,
-#radio-canada,
-#about {
+
+.borough {
+	padding: 15px;
+	/*box-shadow: -2px 2px 3px #000;*/
 	position: absolute;
-	bottom: 10px;
-	background-color: rgba(44, 62, 80,0.9);
-	max-width: 200px;
+	bottom: 20px;
+	left: 20px;
+	background-color: #fff;
+	border: 3px solid #aaa;
+	border-radius: 5px;
+	max-width: 300px;
 	max-height: 60%;
 }
 
+.cartodb-popup h3.name {
+	text-transform: uppercase;
+}
 
-
-
-
+.cartodb-popup .classe_ipc {
+	color: #c0392b;
+}
+.cartodb-popup a,
+.cartodb-popup a:focus,
+.cartodb-popup a:visited,
+.cartodb-popup a:hover,
+.cartodb-popup a:active { color: #c0392b; }
 
 
 /* ==========================================================================

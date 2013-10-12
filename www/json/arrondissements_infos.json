@@ -1,0 +1,97 @@
+{
+    "ahuntsic": {
+        "name": "Ahuntsic—Cartierville",
+        "population": 125160,
+        "surface": 23
+    },
+    "anjou": {
+        "name": "Anjou",
+        "population": 40891,
+        "surface": 13.61
+    },
+    "cdn": {
+        "name": "Côte-des-Neiges—Notre-Dame-de-Grâce",
+        "population": 164246,
+        "surface": 21.4
+    },
+    "lachine": {
+        "name": "Lachine",
+        "population": 43084,
+        "surface": 17.8
+    },
+    "lasalle": {
+        "name": "LaSalle",
+        "population": 74763,
+        "surface": 16.4
+    },
+    "plateau": {
+        "name": "Le Plateau-Mont-Royal",
+        "population": 101054,
+        "surface": 8.1
+    },
+    "sudouest": {
+        "name": "Le Sud-Ouest",
+        "population": 69604,
+        "surface": 15.7
+    },
+    "ilebizard": {
+        "name": "L'île-Bizard—Sainte-Geneviève",
+        "population": 17500,
+        "surface": 23.63
+    },
+    "mhm": {
+        "name": "Mercier—Hochelaga-Maisonneuve",
+        "population": 131483,
+        "surface": 25.4
+    },
+    "mtlnord": {
+        "name": "Montréal-Nord",
+        "population": 83600,
+        "surface": 11.07
+    },
+    "outremont": {
+        "name": "Outremont",
+        "population": 24846,
+        "surface": 3.84
+    },
+    "pierrefonds": {
+        "name": "Pierrefonds-Roxboro",
+        "population": 65156,
+        "surface": 27
+    },
+    "rdp": {
+        "name": "Rivières-des-Prairies—Pointe-aux-Trembles",
+        "population": 107556,
+        "surface": 42.3
+    },
+    "rosemont": {
+        "name": "Rosemont—La Petite-Patrie",
+        "population": 133618,
+        "surface": 14.4
+    },
+    "saintlaurent": {
+        "name": "Saint-Laurent",
+        "population": 93842,
+        "surface": 43
+    },
+    "saintleonard": {
+        "name": "Saint-Léonard",
+        "population": 71730,
+        "surface": 13.52
+    },
+    "verdun": {
+        "name": "Verdun",
+        "population": 66078,
+        "surface": 9.83
+    },
+    "villemarie": {
+        "name": "Ville-Marie",
+        "population": 78876,
+        "surface": 16.5
+    },
+    "vsp": {
+        "name": "Villeray—Saint-Michel—Parc-Extension",
+        "population": 145000,
+        "surface": 16.1
+    }
+}

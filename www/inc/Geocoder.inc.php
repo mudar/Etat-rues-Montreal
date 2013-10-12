@@ -54,7 +54,7 @@ class Geocoder
 	}
 
 
-	function _is_postal_code( $postal_code )
+	private function _is_postal_code( $postal_code )
 	{
 		//function by Roshan Bhattara(http://roshanbh.com.np)
 		if( preg_match( "/^([a-ceghj-npr-tv-z]){1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}$/i" , $postal_code ) )
