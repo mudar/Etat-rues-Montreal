@@ -52,24 +52,8 @@ initializeMap = function( center, zoom ) {
 		provider: new L.GeoSearch.Provider.OpenStreetMap()
 	}).addTo(map);
 
-/*
-	L.tileLayer('http://{s}.tile.cloudmade.com/{key}/22677/256/{z}/{x}/{y}.png', {
-		attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-		key: 'BC9A493B41014CAABB98F0471D759707'
-	}).addTo(map);
-*/
-/*
-	var wms_geobase = L.tileLayer.wms( urlWMS + '?', {
-		format: 'image/png',
-		srs: 'EPSG:4326',
-		transparent: true,
-		layers: 'Geobase:geobase_mtl_4326_postgis'
-	}).addTo(map);
-*/
-
-// https://maps.google.ca/?cbll=45.5102370986,-73.5680059163&cbp=0,0,0,0,0&layer=c&z=16&hl=en
-      layerCarto = cartodb.createLayer(map, 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json')
-         .addTo(map);
+	layerCarto = cartodb.createLayer(map, 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json')
+	   .addTo(map);
 
 	return map;
 }
@@ -89,38 +73,9 @@ enableFullScreen = function() {
 	});
 }
 
-/*
-getGeoJSON = function() {
-	if ( map.getZoom() >= streetZoomLevel ) {
-
-// 			globalAjaxCursorChange();
-
-		var bounds = map.getBounds();
-		var NW = bounds.getNorthWest();
-		var SE = bounds.getSouthEast();
-		alert('TODO: download data for \nSE ' + SE + ' \nNW ' + NW  );
-		jQuery.getJSON( "api/" ,
-			{ address: $('#address').val() ,
-				latNW: NW.lat , lonNW: NW.lng , latSE: SE.lat , lonSE: SE.lng } ,
-			function(data) {
-				geoJsonLayer.clearLayers();
-				geoJsonLayer.addData([data]);
-		});
-
-	}
-}
-*/
-
 setMapListeners = function() {
 	var hasZoomedIn = false;
 	var hasZoomedOut = false;
-
-	/*
-	map.on("moveend", function(e) {
-		getGeoJSON();
-	});
-	*/
-	// map.addEventListener('click', onMapClick);
 
 	map.on("dragend", function(e) {
 		if ( map.getZoom() >= streetZoomLevel ) {
@@ -132,43 +87,21 @@ setMapListeners = function() {
 		if ( map.getZoom() >= streetZoomLevel ) {
 			hasZoomedIn = true;
 			map.removeLayer(boroughsGeoJsonLayer);
-// 			if ( hasZoomedOut ) {
-// 				$( "#footer_zoom_in" ).hide();
-// 				$("#footer_wrapper").hide();
-// 			}
 		}
 		else if ( hasZoomedIn ) {
 			hasZoomedOut = true;
 			boroughsGeoJsonLayer.addTo(map);
-// 			$( "#footer_content .hint" ).hide();
-// 			$( "#footer_zoom_in" ).show();
-// 			$("#footer_wrapper").show();
 		}
 	});
 
 
 	layerCarto.on('done', function(layer) {
-
 		// get sublayer 0 and set the infowindow template
 		var sublayer = layer.getSubLayer(0);
 
 		sublayer.infowindow.set('template', $('#infowindow_template').html());
 	});
-/*
-	layerCarto.on('done', function(layer) {
-		layer.setInteraction(true);
-		layer.on('featureOver', function(e, pos, latlng, data) {
-			cartodb.log.log(e, pos, latlng, data);
-		});
-		layer.on('error', function(err) {
-			cartodb.log.log('error: ' + err);
-		});
-	}).on('error', function() {
-		cartodb.log.log("some error occurred");
-	});
-*/
-	map.on("", function() {
-		});
+
 }
 
 displayUserMarker = function( label ) {
@@ -194,18 +127,12 @@ getBorougsGeoJSON = function(geoJsonLayer) {
 
 onEachFeature = function(feature, layer) {
 	if (feature.properties.ARROND) {
-// 		popupContent = '<span class="black"><strong>' + feature.properties.ARROND + '</strong></span>';
 		layer.setStyle(defaultStyle);
 
 		(function(layer, properties) {
 			layer.on("click", function (e) {
 				map.setView(layer.getBounds().getCenter(), streetZoomLevel+1);
 			});
-			/*
-			layer.on("dblclick", function (e) {
-				map.setZoomAround(e.latlng, 1+map.getZoom());
-			});
-			*/
 			layer.on("mouseover", function (e) {
 				layer.setStyle( map.getZoom() > streetZoomLevel ? defaultStyle: highlightStyle);
 				toggleBoroughInfo( boroughs[feature.properties.ARROND] , true);
@@ -266,8 +193,6 @@ $( document ).ready(function() {
 	var layerCarto;	// initializa global var
 	var map = initializeMap(mapCenter, defaultZoom);
 
-	// displayUserMarker(address);
-
 	initializeUI();
 	enableFullScreen();
 	setMapListeners();
@@ -275,5 +200,4 @@ $( document ).ready(function() {
 	boroughsGeoJsonLayer = L.geoJson(null, { onEachFeature: onEachFeature }).addTo(map);
 	getBorougsGeoJSON(boroughsGeoJsonLayer);
 	excludeNonBoroughs();
-// 	$( '#ahuntsic').show();
 });
