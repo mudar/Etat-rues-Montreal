@@ -52,8 +52,57 @@ initializeMap = function( center, zoom ) {
 		provider: new L.GeoSearch.Provider.OpenStreetMap()
 	}).addTo(map);
 
-	layerCarto = cartodb.createLayer(map, 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json')
-	   .addTo(map);
+	//layerCarto = cartodb.createLayer(map, 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json')
+	   //.addTo(map);
+
+
+      var layerUrl = 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json';
+      var layerIntervention = 'http://hoedic.cartodb.com/api/v2/viz/104ebd34-2b95-11e3-9a0e-3085a9a9563c/viz.json';
+
+      var sublayers = [];
+
+      var LayerActions = {
+        all: function(){
+          sublayers[0].setSQL("SELECT * FROM geobase_mtl_4326_arr_stats_final").setCartoCSS('#geobase_mtl_4326_arr_stats_final{line-color: #cccccc;line-opacity: 0.8;line-width: 1;polygon-opacity: 0;[zoom <= 12] {line-width: 1;}[zoom >= 13] {line-width: 2;} [zoom >= 15] {line-width: 3.4;} [zoom >= 17] {line-width: 5;} }#geobase_mtl_4326_arr_stats_final[ ipc <= 100] {line-color:  #1a9641;}#geobase_mtl_4326_arr_stats_final[ ipc <= 79] {line-color: #a6d96a;}#geobase_mtl_4326_arr_stats_final[ ipc <= 59] {line-color: #ffffbf;}#geobase_mtl_4326_arr_stats_final[ ipc <= 39] {line-color: #fdae61;}#geobase_mtl_4326_arr_stats_final[ ipc <= 19] {line-color:#d7191c;}}');
+          return true;
+        },
+        rep: function(){
+          sublayers[0].setSQL("SELECT * FROM geobase_mtl_4326_arr_stats_final WHERE interventi = 'OUI'")
+          .setCartoCSS("#geobase_mtl_4326_arr_stats_final{line-color: #c33;  line-opacity: 0.8; line-width: 3;[zoom <= 12] {line-width: 3;}[zoom >= 13] {line-width: 4;} [zoom >= 15] {line-width: 5;} [zoom >= 17] {line-width: 6;}}");
+          return true;
+        }
+      }
+
+      cartodb.createLayer(map, layerUrl)
+        .addTo(map)
+        .on('done', function(layer) {
+          // change the query for the first layer
+          var subLayerOptions = {
+            sql: "SELECT * FROM geobase_mtl_4326_arr_stats_final WHERE interventi = 'OUI'",
+            cartocss: "#geobase_mtl_4326_arr_stats_final{line-color: #c33;  line-opacity: 0.8; line-width: 3;[zoom <= 12] {line-width: 3;}[zoom >= 13] {line-width: 4;} [zoom >= 15] {line-width: 5;} [zoom >= 17] {line-width: 6;}}"
+          }
+
+          var sublayer = layer.getSubLayer(0);
+
+          sublayer.set(subLayerOptions);
+
+          sublayers.push(sublayer);
+        })
+        .on('done', function(layer) {
+
+          // get sublayer 0 and set the infowindow template
+          var sublayer = layer.getSubLayer(0);
+
+          sublayer.infowindow.set('template', $('#infowindow_template').html());
+        }).on('error', function() {
+          console.log("some error occurred");
+        });
+
+        $('.button').click(function() {
+        $('.button').removeClass('selected');
+        $(this).addClass('selected');
+        LayerActions[$(this).attr('id')]();
+      });
 
 	return map;
 }
@@ -94,14 +143,14 @@ setMapListeners = function() {
 		}
 	});
 
-
+/*
 	layerCarto.on('done', function(layer) {
 		// get sublayer 0 and set the infowindow template
 		var sublayer = layer.getSubLayer(0);
 
 		sublayer.infowindow.set('template', $('#infowindow_template').html());
 	});
-
+*/
 }
 
 displayUserMarker = function( label ) {
