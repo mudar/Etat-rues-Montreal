@@ -30,6 +30,7 @@ var boroughs = {"Ahuntsic-Cartierville":"ahuntsic",
 	"Villeray-Saint-Michel-Parc-Extension":"vsp"
 };
 
+
 globalAjaxCursorChange = function(){
 	$("html").bind("ajaxStart", function(){
 		$(this).addClass('busy');
@@ -38,44 +39,14 @@ globalAjaxCursorChange = function(){
 	});
 }
 
-initMap = function() {
-var map = new L.Map('map', {
-          zoomControl: false,
-          center: [45.55, -73.67],
-          zoom: 11
-        });
-
-        L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
-          attribution: 'Stamen'
-        }).addTo(map);
-
-        cartodb.createLayer(map, 'http://codelf.cartodb.com/api/v2/viz/13eb90b0-2a97-11e3-bc57-5404a6a69006/viz.json')
-         .addTo(map)
-         .on('done', function(layer) {
-
-          layer.setInteraction(true);
-
-          layer.on('featureOver', function(e, pos, latlng, data) {
-            cartodb.log.log(e, pos, latlng, data);
-          });
-
-          layer.on('error', function(err) {
-            cartodb.log.log('error: ' + err);
-          });
-        }).on('error', function() {
-          cartodb.log.log("some error occurred");
-        });
-      }
-
-initializeMap = function(center, zoom ) {
+initializeMap = function( center, zoom ) {
 	map = L.map('map', { attributionControl: false }).setView(center, zoom);
 	map.setMaxBounds([ [45.158,-74.328] , [46.019,-72.977] ] );
 	if ( zoom == 11 ) {
 		// Default zoom, so fitBounds()
 		map.fitBounds( [ [45.4014,-73.976] , [45.722,-73.453] ] , { paddingTopLeft: [0, 50]} );
 	}
-L.tileLayer.provider('Stamen.Toner').addTo(map);
-// L.tileLayer.provider('OpenStreetMap.BlackAndWhite').addTo(map);
+	L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', { attribution: 'Stamen'}).addTo(map);
 
 	new L.Control.GeoSearch({
 		provider: new L.GeoSearch.Provider.OpenStreetMap()
@@ -95,22 +66,10 @@ L.tileLayer.provider('Stamen.Toner').addTo(map);
 		layers: 'Geobase:geobase_mtl_4326_postgis'
 	}).addTo(map);
 */
-      cartodb.createLayer(map, 'http://codelf.cartodb.com/api/v2/viz/13eb90b0-2a97-11e3-bc57-5404a6a69006/viz.json')
-         .addTo(map)
-         .on('done', function(layer) {
 
-          layer.setInteraction(true);
-
-          layer.on('featureOver', function(e, pos, latlng, data) {
-            cartodb.log.log(e, pos, latlng, data);
-          });
-
-          layer.on('error', function(err) {
-            cartodb.log.log('error: ' + err);
-          });
-        }).on('error', function() {
-          cartodb.log.log("some error occurred");
-        });
+// https://maps.google.ca/?cbll=45.5102370986,-73.5680059163&cbp=0,0,0,0,0&layer=c&z=16&hl=en
+      layerCarto = cartodb.createLayer(map, 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json')
+         .addTo(map);
 
 	return map;
 }
@@ -128,72 +87,6 @@ enableFullScreen = function() {
 	map.on('exitFullscreen', function(){
 		if(window.console) window.console.log('exitFullscreen');
 	});
-}
-
-
-onMapClick = function(e) {
-	if ( map.getZoom() >= streetZoomLevel ) {
-
-		var latlngStr = '(' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3) + ')';
-		var BBOX = map.getBounds().toBBoxString();
-		var WIDTH = map.getSize().x;
-		var HEIGHT = map.getSize().y;
-		var X = map.layerPointToContainerPoint(e.layerPoint).x;
-		var Y = map.layerPointToContainerPoint(e.layerPoint).y;
-// 		var URL = '?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&LAYERS=Geobase:geobase_mtl_4326_postgis&QUERY_LAYERS=Geobase:geobase_mtl_4326_postgis&STYLES=&BBOX='+BBOX+'&FEATURE_COUNT=1&HEIGHT='+HEIGHT+'&WIDTH='+WIDTH+'&INFO_FORMAT=text/html&SRS=EPSG:4326&X='+X+'&Y='+Y;
-// 		alert(urlWMS + URL);
-
-
-$.ajax({
-	type: "GET",
-	url: urlWMS ,
-	crossDomain: true,
-	asynch: false,
-	dataType: 'xml',
-	data: {
-		SERVICE:"WMS",
-		VERSION:"1.1.1",
-		REQUEST:"GetFeatureInfo",
-		LAYERS:"Geobase:geobase_mtl_4326_postgis",
-		QUERY_LAYERS:"Geobase:geobase_mtl_4326_postgis",
-		BBOX:BBOX,
-		FEATURE_COUNT:1,
-		HEIGHT:HEIGHT,
-		WIDTH:WIDTH,
-		INFO_FORMAT:"application/vnd.ogc.gml",
-		SRS:"EPSG:4326",
-		X:X,
-		Y:Y
-	}
-})
-	.done(function( data ) {
-		alert( + msg );
-	})
-	.fail(function(  jqXHR, textStatus, errorThrown) {
-alert( "Request failed: " + textStatus);
-});
-
-// 		$.ajax({
-//
-// 			dataType: "html",
-// 			type: "GET",
-// 			//async: false,
-// 			success: function(data) {
-// 				alert(data);
-//
-// 				if (data.indexOf("<table") != -1) {
-// // 					popup.setContent(data);
-// // 					popup.setLatLng(e.latlng);
-// // 					map.openPopup(popup);
-//
-// 					// dork with the default return table - get rid of geoserver fid column, apply bootstrap table styling
-// 					/*if ($(".featureInfo th:nth-child(1)").text() == "fid") $('.featureInfo td:nth-child(1), .featureInfo th:nth-child(1)').hide();
-// 					$("caption.featureInfo").removeClass("featureInfo");
-// 					$("table.featureInfo").addClass("table").addClass("table-striped").addClass("table-condensed").addClass("table-hover").removeClass("featureInfo");*/
-// 				}
-// 			}
-// 		});
-	}
 }
 
 /*
@@ -229,6 +122,12 @@ setMapListeners = function() {
 	*/
 	// map.addEventListener('click', onMapClick);
 
+	map.on("dragend", function(e) {
+		if ( map.getZoom() >= streetZoomLevel ) {
+			$( '.borough').hide();
+		}
+	});
+
 	map.on("zoomend", function(e) {
 		if ( map.getZoom() >= streetZoomLevel ) {
 			hasZoomedIn = true;
@@ -246,6 +145,30 @@ setMapListeners = function() {
 // 			$("#footer_wrapper").show();
 		}
 	});
+
+
+	layerCarto.on('done', function(layer) {
+
+		// get sublayer 0 and set the infowindow template
+		var sublayer = layer.getSubLayer(0);
+
+		sublayer.infowindow.set('template', $('#infowindow_template').html());
+	});
+/*
+	layerCarto.on('done', function(layer) {
+		layer.setInteraction(true);
+		layer.on('featureOver', function(e, pos, latlng, data) {
+			cartodb.log.log(e, pos, latlng, data);
+		});
+		layer.on('error', function(err) {
+			cartodb.log.log('error: ' + err);
+		});
+	}).on('error', function() {
+		cartodb.log.log("some error occurred");
+	});
+*/
+	map.on("", function() {
+		});
 }
 
 displayUserMarker = function( label ) {
@@ -275,9 +198,14 @@ onEachFeature = function(feature, layer) {
 		layer.setStyle(defaultStyle);
 
 		(function(layer, properties) {
+			layer.on("click", function (e) {
+				map.setView(layer.getBounds().getCenter(), streetZoomLevel+1);
+			});
+			/*
 			layer.on("dblclick", function (e) {
 				map.setZoomAround(e.latlng, 1+map.getZoom());
 			});
+			*/
 			layer.on("mouseover", function (e) {
 				layer.setStyle( map.getZoom() > streetZoomLevel ? defaultStyle: highlightStyle);
 				toggleBoroughInfo( boroughs[feature.properties.ARROND] , true);
@@ -324,17 +252,28 @@ toggleBoroughInfo = function( boroughId , isEnabled ) {
 	}
 }
 
+excludeNonBoroughs = function() {
+	boroughsGeoJsonLayer
+		.on("mouseout", function (e) {
+			toggleBoroughInfo('non-mtl', true);
+		})
+		.on("mouseover", function (e) {
+			toggleBoroughInfo('non-mtl', false);
+		});
+}
+
 $( document ).ready(function() {
+	var layerCarto;	// initializa global var
 	var map = initializeMap(mapCenter, defaultZoom);
-	//var map = initMap();
+
 	// displayUserMarker(address);
 
 	initializeUI();
 	enableFullScreen();
 	setMapListeners();
 
-	//boroughsGeoJsonLayer = L.geoJson(null, { onEachFeature: onEachFeature }).addTo(map);
-	//getBorougsGeoJSON(boroughsGeoJsonLayer);
+	boroughsGeoJsonLayer = L.geoJson(null, { onEachFeature: onEachFeature }).addTo(map);
+	getBorougsGeoJSON(boroughsGeoJsonLayer);
+	excludeNonBoroughs();
 // 	$( '#ahuntsic').show();
-
 });
