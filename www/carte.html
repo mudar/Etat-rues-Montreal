@@ -28,9 +28,23 @@
 
 	<div id="map"></div>
 
-	<div id='menu'>
-		<a href="#rep" id="rep" class="button reparation selected">Rues nécessitant des réparations</a>
-		<a href="#all" id="all" class="button all">Toutes les rues</a>
+	<div class="leaflet-control-container">
+		<div class="leaflet-top leaflet-right">
+			<div class="leaflet-control-layers leaflet-control-layers-expanded leaflet-control" aria-haspopup="true">
+				<form class="leaflet-control-layers-list">
+					<div class="leaflet-control-layers-base">
+						<label>
+							<input class="leaflet-control-layers-selector" value="rep" type="radio" checked="checked" name="cartodb-layer">
+							<span> Rues nécessitant des réparations</span>
+						</label>
+						<label>
+							<input class="leaflet-control-layers-selector" value="all" type="radio" name="cartodb-layer">
+							<span> Toutes les rues</span>
+						</label>
+					</div>
+				</form>
+			</div>
+		</div>
 	</div>
 
 	<div id="wrapper">

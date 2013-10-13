@@ -138,10 +138,9 @@ setMapListeners = function() {
 // 			console.log("some error occurred");
 		});
 		
-	$('.button').click(function() {
-		$('.button').removeClass('selected');
-		$(this).addClass('selected');
-		LayerActions[$(this).attr('id')]();
+	$('input[name=cartodb-layer]').change(function() {
+		layerId = $(this).val();
+		LayerActions[ layerId ]();
 	});
 }
 
