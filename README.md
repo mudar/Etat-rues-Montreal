@@ -65,8 +65,8 @@ Traiter un volume de données important et le rendre intelligible pour le grand 
 [link_osm]: http://www.openstreetmap.org/
 [link_jquery]: http://jquery.com/
 [link_h5bp]: http://html5boilerplate.com/
-[img_logo_radio_canada]: http://etatdesroutes.localhost/images/logo-radio-canada.png
-[img_header_geohack]: http://etatdesroutes.localhost/images/header-geohack.jpg
+[img_logo_radio_canada]: http://ruesmontreal.mudar.ca/images/logo-radio-canada.png
+[img_header_geohack]: http://ruesmontreal.mudar.ca/images/header-geohack.jpg
 
 [link_florent]: https://twitter.com/fdaudens
 [link_nicolas]: https://twitter.com/codelf
