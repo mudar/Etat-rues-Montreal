@@ -98,8 +98,8 @@ textarea {
    ========================================================================== */
 
 /* Leaflet fixes  */
-.leaflet-top {
-/*     top: 50px; */
+.leaflet-top.leaflet-right {
+	max-width: 25%;
 }
 
 html,
@@ -235,7 +235,6 @@ a#submit:hover {
 .cartodb-popup a:hover,
 .cartodb-popup a:active { color: #c0392b; }
 
-    #cartodb-map { width: 100%; height:100%; background: #fff;}
     #menu { position: absolute; top: 5px; right: 10px; width: 400px; height:60px; background: transparent; z-index:10;}
     #menu a {
       margin: 15px 10px 0 0;

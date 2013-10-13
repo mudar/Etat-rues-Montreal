@@ -1,5 +1,8 @@
 
 var urlWMS = 'http://sigp.effigis.com/geoserver/Geobase/wms';
+
+var mapCenter = [45.606832, -73.701782];
+var defaultZoom = 11;
 var streetZoomLevel = 14;
 var defaultStyle = { weight: 1, opacity: 0, fillOpacity: 0 };
 var highlightStyle = {
@@ -29,13 +32,13 @@ var boroughs = {"Ahuntsic-Cartierville":"ahuntsic",
 	"Ville-Marie":"villemarie",
 	"Villeray-Saint-Michel-Parc-Extension":"vsp"
 };
-
+var cartoLayer = null;
 
 globalAjaxCursorChange = function(){
-	$("html").bind("ajaxStart", function(){
-		$(this).addClass('busy');
-	}).bind("ajaxStop", function(){
-		$(this).removeClass('busy');
+	$( document ).ajaxStart(function() {
+		$('html').addClass('busy');
+	}).ajaxStop(function() {
+		$('html').removeClass('busy');
 	});
 }
 
@@ -52,57 +55,10 @@ initializeMap = function( center, zoom ) {
 		provider: new L.GeoSearch.Provider.OpenStreetMap()
 	}).addTo(map);
 
-	//layerCarto = cartodb.createLayer(map, 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json')
-	   //.addTo(map);
+	var layerUrl = 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json';
 
-
-      var layerUrl = 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json';
-      var layerIntervention = 'http://hoedic.cartodb.com/api/v2/viz/104ebd34-2b95-11e3-9a0e-3085a9a9563c/viz.json';
-
-      var sublayers = [];
-
-      var LayerActions = {
-        all: function(){
-          sublayers[0].setSQL("SELECT * FROM geobase_mtl_4326_arr_stats_final").setCartoCSS('#geobase_mtl_4326_arr_stats_final{line-color: #cccccc;line-opacity: 0.8;line-width: 1;polygon-opacity: 0;[zoom <= 12] {line-width: 1;}[zoom >= 13] {line-width: 2;} [zoom >= 15] {line-width: 3.4;} [zoom >= 17] {line-width: 5;} }#geobase_mtl_4326_arr_stats_final[ ipc <= 100] {line-color:  #1a9641;}#geobase_mtl_4326_arr_stats_final[ ipc <= 79] {line-color: #a6d96a;}#geobase_mtl_4326_arr_stats_final[ ipc <= 59] {line-color: #ffffbf;}#geobase_mtl_4326_arr_stats_final[ ipc <= 39] {line-color: #fdae61;}#geobase_mtl_4326_arr_stats_final[ ipc <= 19] {line-color:#d7191c;}}');
-          return true;
-        },
-        rep: function(){
-          sublayers[0].setSQL("SELECT * FROM geobase_mtl_4326_arr_stats_final WHERE interventi = 'OUI'")
-          .setCartoCSS("#geobase_mtl_4326_arr_stats_final{line-color: #c33;  line-opacity: 0.8; line-width: 3;[zoom <= 12] {line-width: 3;}[zoom >= 13] {line-width: 4;} [zoom >= 15] {line-width: 5;} [zoom >= 17] {line-width: 6;}}");
-          return true;
-        }
-      }
-
-      cartodb.createLayer(map, layerUrl)
-        .addTo(map)
-        .on('done', function(layer) {
-          // change the query for the first layer
-          var subLayerOptions = {
-            sql: "SELECT * FROM geobase_mtl_4326_arr_stats_final WHERE interventi = 'OUI'",
-            cartocss: "#geobase_mtl_4326_arr_stats_final{line-color: #c33;  line-opacity: 0.8; line-width: 3;[zoom <= 12] {line-width: 3;}[zoom >= 13] {line-width: 4;} [zoom >= 15] {line-width: 5;} [zoom >= 17] {line-width: 6;}}"
-          }
-
-          var sublayer = layer.getSubLayer(0);
-
-          sublayer.set(subLayerOptions);
-
-          sublayers.push(sublayer);
-        })
-        .on('done', function(layer) {
-
-          // get sublayer 0 and set the infowindow template
-          var sublayer = layer.getSubLayer(0);
-
-          sublayer.infowindow.set('template', $('#infowindow_template').html());
-        }).on('error', function() {
-          console.log("some error occurred");
-        });
-
-        $('.button').click(function() {
-        $('.button').removeClass('selected');
-        $(this).addClass('selected');
-        LayerActions[$(this).attr('id')]();
-      });
+	cartoLayer = cartodb.createLayer(map, layerUrl);
+	cartoLayer.addTo(map);
 
 	return map;
 }
@@ -142,15 +98,51 @@ setMapListeners = function() {
 			boroughsGeoJsonLayer.addTo(map);
 		}
 	});
+	
+	/**
+	 * CartoDB callbacks, layers and buttons
+	 */
+	var sublayers = [];
+	var LayerActions = {
+		all: function(){
+			sublayers[0]
+				.setSQL("SELECT * FROM geobase_mtl_4326_arr_stats_final")
+				.setCartoCSS('#geobase_mtl_4326_arr_stats_final{line-color: #cccccc;line-opacity: 0.8;line-width: 1;polygon-opacity: 0;[zoom <= 12] {line-width: 1;}[zoom >= 13] {line-width: 2;} [zoom >= 15] {line-width: 3.4;} [zoom >= 17] {line-width: 5;} }#geobase_mtl_4326_arr_stats_final[ ipc <= 100] {line-color:  #1a9641;}#geobase_mtl_4326_arr_stats_final[ ipc <= 79] {line-color: #a6d96a;}#geobase_mtl_4326_arr_stats_final[ ipc <= 59] {line-color: #ffffbf;}#geobase_mtl_4326_arr_stats_final[ ipc <= 39] {line-color: #fdae61;}#geobase_mtl_4326_arr_stats_final[ ipc <= 19] {line-color:#d7191c;}}');
+			return true;
+		},
+		rep: function(){
+			sublayers[0]
+				.setSQL("SELECT * FROM geobase_mtl_4326_arr_stats_final WHERE interventi = 'OUI'")
+				.setCartoCSS("#geobase_mtl_4326_arr_stats_final{line-color: #c33;  line-opacity: 0.8; line-width: 3;[zoom <= 12] {line-width: 3;}[zoom >= 13] {line-width: 4;} [zoom >= 15] {line-width: 5;} [zoom >= 17] {line-width: 6;}}");
+			return true;
+		}
+	};
+	cartoLayer
+		.on('done', function(layer) {
+			// change the query for the first layer
+			var subLayerOptions = {
+				sql: "SELECT * FROM geobase_mtl_4326_arr_stats_final WHERE interventi = 'OUI'",
+				cartocss: "#geobase_mtl_4326_arr_stats_final{line-color: #c33;  line-opacity: 0.8; line-width: 3;[zoom <= 12] {line-width: 3;}[zoom >= 13] {line-width: 4;} [zoom >= 15] {line-width: 5;} [zoom >= 17] {line-width: 6;}}"
+			}
 
-/*
-	layerCarto.on('done', function(layer) {
-		// get sublayer 0 and set the infowindow template
-		var sublayer = layer.getSubLayer(0);
-
-		sublayer.infowindow.set('template', $('#infowindow_template').html());
+			var sublayer = layer.getSubLayer(0);
+			sublayer.set(subLayerOptions);
+			sublayers.push(sublayer);
+		})
+		.on('done', function(layer) {
+			// get sublayer 0 and set the infowindow template
+			var sublayer = layer.getSubLayer(0);
+			sublayer.infowindow.set('template', $('#infowindow_template').html());
+		})
+		.on('error', function() {
+// 			console.log("some error occurred");
+		});
+		
+	$('.button').click(function() {
+		$('.button').removeClass('selected');
+		$(this).addClass('selected');
+		LayerActions[$(this).attr('id')]();
 	});
-*/
 }
 
 displayUserMarker = function( label ) {
@@ -161,8 +153,6 @@ displayUserMarker = function( label ) {
 }
 
 getBorougsGeoJSON = function(geoJsonLayer) {
-
-	globalAjaxCursorChange();
 
 	var bounds = map.getBounds();
 	var NW = bounds.getNorthWest();
@@ -196,6 +186,8 @@ onEachFeature = function(feature, layer) {
 
 
 initializeUI = function() {
+	globalAjaxCursorChange();
+	
 	$(".scrollable").niceScroll({cursorcolor:"#7f8c8d", cursorborder: "none" });
 
 	$( '#submit' ).click(function(e) {
