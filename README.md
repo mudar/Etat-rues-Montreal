@@ -17,7 +17,7 @@ Traiter un volume de données important et le rendre intelligible pour le grand 
 ##Liens
 
 * [Sujet Radio-Canada][link_prod]
-* [Site web][link_website] + [demo][link_website_iframe]
+* [Site web][link_website] + [demo][link_website_demo]
 * [Code source][link_github]
 * [Défi GéoHack 2013][link_geohack]
 
@@ -53,9 +53,11 @@ Traiter un volume de données important et le rendre intelligible pour le grand 
     See the License for the specific language governing permissions and
     limitations under the License.
 
+[![Demo][img_screenshot]][link_website_demo]
+
 [link_prod]: http://www.radio-canada.ca/sujet/etat-rues-montreal
 [link_website]: http://ruesmontreal.mudar.ca/
-[link_website_iframe]: http://ruesmontreal.mudar.ca/carte.html
+[link_website_demo]: http://ruesmontreal.mudar.ca/demo/
 [link_github]: https://github.com/mudar/Etat-rues-Montreal
 [link_geohack]: http://defigeohackmtl.org/
 [link_cartodb]: http://cartodb.com/
@@ -67,6 +69,7 @@ Traiter un volume de données important et le rendre intelligible pour le grand 
 [link_h5bp]: http://html5boilerplate.com/
 [img_logo_radio_canada]: http://ruesmontreal.mudar.ca/images/logo-radio-canada.png
 [img_header_geohack]: http://ruesmontreal.mudar.ca/images/header-geohack.jpg
+[img_screenshot]: http://ruesmontreal.mudar.ca/images/screenshot.png
 
 [link_florent]: https://twitter.com/fdaudens
 [link_nicolas]: https://twitter.com/codelf
