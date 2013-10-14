@@ -53,7 +53,7 @@ Traiter un volume de données important et le rendre intelligible pour le grand 
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[![Demo][img_screenshot]][link_website_demo]
+[![Demo][img_screen_shot]][link_website_demo]
 
 [link_prod]: http://www.radio-canada.ca/sujet/etat-rues-montreal
 [link_website]: http://ruesmontreal.mudar.ca/
@@ -69,7 +69,7 @@ Traiter un volume de données important et le rendre intelligible pour le grand 
 [link_h5bp]: http://html5boilerplate.com/
 [img_logo_radio_canada]: http://ruesmontreal.mudar.ca/images/logo-radio-canada.png
 [img_header_geohack]: http://ruesmontreal.mudar.ca/images/header-geohack.jpg
-[img_screenshot]: http://ruesmontreal.mudar.ca/images/screenshot.png
+[img_screen_shot]: http://ruesmontreal.mudar.ca/images/screenshot.png
 
 [link_florent]: https://twitter.com/fdaudens
 [link_nicolas]: https://twitter.com/codelf
