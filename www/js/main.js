@@ -55,7 +55,8 @@ initializeMap = function( center, zoom ) {
 		provider: new L.GeoSearch.Provider.OpenStreetMap()
 	}).addTo(map);
 
-	var layerUrl = 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json';
+	/*var layerUrl = 'http://hoedic.cartodb.com/api/v2/viz/ef92bc74-2b8c-11e3-8fc0-3085a9a9563c/viz.json';*/
+        var layerUrl = 'http://hoedic.cartodb.com/api/v2/viz/f8e85e5a-35fa-11e3-afb0-3085a9a9563c/viz.json';
 
 	cartoLayer = cartodb.createLayer(map, layerUrl);
 	cartoLayer.addTo(map);
