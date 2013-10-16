@@ -181,15 +181,15 @@
 		<div class="cartodb-popup">
 			<a href="#close" class="cartodb-popup-close-button close">x</a>
 			<div class="cartodb-popup-content-wrapper">
-				<h3 class="name cartodb-popup-header">{{content.data.nom_voie}} {{content.data.type_voie_en}} {{content.data.dir_voie_en}}</h3>
+				<h3 class="name cartodb-popup-header">{{content.data.typ_voie}} {{content.data.lie_voie}} {{content.data.nom_voie}} {{content.data.dir_voie}}</h3>
 				<div class="cartodb-popup-subheader">
 					<p>Arrondissement&nbsp;: {{content.data.arrond}}</p>
 				</div>
 
 				<div class="cartodb-popup-content">
 					<p>Qualité&nbsp;: <strong>{{content.data.ipc}}&nbsp;%</strong></p>
-					<p>État du tronçon&nbsp;: <strong class="classe_ipc">{{content.data.classe_ipc_en}}</strong></p>
-					<p>Intervention nécessaire selon les critères de la ville&nbsp;: {{content.data.interventi_en}}</p>
+					<p>État du tronçon&nbsp;: <strong class="classe_ipc">{{content.data.classe_ipc}}</strong></p>
+					<p>Intervention nécessaire selon les critères de la ville&nbsp;: {{content.data.interventi}}</p>
 					<p><small><a target="_blank" href="https://maps.google.ca/?cbll={{content.data.lat}},{{content.data.lng}}&amp;cbp=0,0,0,0,0&amp;layer=c&amp;z=16&amp;hl=fr">Voir sur Google Street View</a></small></p>
 				</div>
 			</div>
