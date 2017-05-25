@@ -1,4 +1,4 @@
-##État du réseau routier de la Ville de Montréal
+## État du réseau routier de la Ville de Montréal
 
 Projet réalisé dans le cadre du [Défi GéoHack 2013][link_geohack], le 2 octobre 2013 à Montréal.
 
@@ -8,26 +8,26 @@ Projet réalisé dans le cadre du [Défi GéoHack 2013][link_geohack], le 2 octo
 
 [![Montréal : quel est l’état de votre rue?][img_logo_radio_canada]][link_prod]
 
-##Description
+## Description
 Mettre sur pied un moteur de rechercher comparatif pour les internautes qui leur permette de comprendre l’état du réseau routier de façon interactive.
 
-##Objectif
+## Objectif
 Traiter un volume de données important et le rendre intelligible pour le grand public, en plus de constituer un point de départ pour des reportages radio, télé et web.
 
-##Liens
+## Liens
 
 * [Sujet Radio-Canada][link_prod]
 * [Site web][link_website] + [demo][link_website_demo]
 * [Code source][link_github]
 * [Défi GéoHack 2013][link_geohack]
 
-##Participants
+## Participants
 * [Florent Daudens][link_florent] (coordonnateur)
 * [Nicolas Delffon][link_nicolas] (coordonnateur)
 * [Mudar Noufal][link_mudar] (développeur)
 * [Stéphane Guidoin][link_stephane] (développeur)
 
-##Technologies utilisées
+## Technologies utilisées
 
 * [OpenStreetMap][link_osm]
 * [CartoDB][link_cartodb]
@@ -37,7 +37,7 @@ Traiter un volume de données important et le rendre intelligible pour le grand 
 * [jQuery][link_jquery]
 * [HTML5 Boilerplate][link_h5bp]
 
-##Licence 
+## Licence 
 
     Copyright 2013 Équipe du projet État du réseau routier
 
